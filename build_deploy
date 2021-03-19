@@ -1,0 +1,11 @@
+#!/bin bash
+
+img_url="gcr.io/storage-app-307208/helloworld"
+
+docker build . --tag $img_url
+
+docker push $img_url 
+
+gcloud beta run deploy --image $img_url
+
+firebase deploy
