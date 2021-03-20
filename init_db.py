@@ -1,23 +1,18 @@
 import sqlite3
+import pandas as pd
+
 
 conn = sqlite3.connect('basement_db.db')
-
-with open('storage.sql') as s:
-    conn.executescript(s.read())
-
 c = conn.cursor()
 
-c.execute('INSERT INTO storage (Category, Name, Quantity, Expiry_date, Deleted) VALUES (?, ?, ?, ?, ?)',
-         ('Mehl', 'Weizen VK', 4, 2109, 0)
-         )
 
-c.execute('INSERT INTO storage (Category, Name, Quantity, Expiry_date, Deleted) VALUES (?, ?, ?, ?, ?)',
-         ('Mehl', 'Dinkel 630', 2, 2111, 0)
-         )
+read_storage = pd.read_csv('/home/pbj/Documents/projects/storage-app/in_storage_210319.csv')
+read_storage.to_sql('storage', conn, if_exists='replace', index=False)
 
-c.execute('INSERT INTO storage (Category, Name, Quantity, Expiry_date, Deleted) VALUES (?, ?, ?, ?, ?)',
-         ('Getranke', 'Zubrowka', 1, 0, 0)
-         )
+
+
+
+
 
 conn.commit()
 conn.close()

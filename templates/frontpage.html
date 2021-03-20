@@ -3,9 +3,7 @@
 {% block content %}
     <h1>{% block title %} What's in the basement?{% endblock %}</h1>
     {% for item in storage %}
-        <a href="#">
-            <p>{{ item['Category'] }} {{ item['Name'] }} {{ item['Quantity'] }} {{ item['Expiry_date'] }}</p>
-        </a>
+            <p>{{ item['Category'] }} {{ item['Article'] }}{{ item['Quantity'] }} {{ item['Expiry_date'] }}</p>
         <hr>
     {% endfor %}
 {% endblock %}
