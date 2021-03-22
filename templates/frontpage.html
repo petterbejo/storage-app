@@ -2,8 +2,14 @@
 
 {% block content %}
     <h1>{% block title %} What's in the basement?{% endblock %}</h1>
+    <table style="width:100%">
     {% for item in storage %}
-            <p>{{ item['Category'] }} {{ item['Article'] }}{{ item['Quantity'] }} {{ item['Expiry_date'] }}</p>
-        <hr>
+            <tr>
+            <th>{{ item['Category'] }}</th>
+            <th>{{ item['Article'] }}</th>
+            <th>{{ item['Quantity'] }}</th>
+            <th>{{ item['Expiry_date'] }}</th>
+            </tr>
     {% endfor %}
+    </table>
 {% endblock %}
