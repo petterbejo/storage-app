@@ -9,8 +9,8 @@
             <td>{{ item['Article'] }}</td>
             <td>{{ item['Quantity'] }}</td>
             <td>{{ item['Expiry_date'] }}</td>
-            <td> <button type="submit" class="btn btn-primary">-</button> </td>
-            <td> <button type="submit" class="btn btn-primary">+</button> </td>
+            <td> <a href="{{ url_for('test', article=item['Article']) }}"> <span class="btn btn-primary">-</span> </a>
+            <td> <a href="{{ url_for('test', article=item['Article']) }}"> <span class="btn btn-primary">+</span> </a>
             </tr>
     {% endfor %}
     </table>
