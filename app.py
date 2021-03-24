@@ -10,10 +10,6 @@ def get_db_connection():
     return conn
 
 
-# Add function to remove item from db here
-
-# Add function to add item to db here
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -27,14 +23,19 @@ def index():
     return render_template('frontpage.html', storage=items)
 
 
-@app.route('/test')
-def test():
-    return "Hello there, this is just a test."
-
-
-@app.route('/<int:id>', methods=('GET', 'POST'))
-def update(id):
+@app.route('/<int:id>/remove', methods=('GET', 'POST'))
+def remove_item(id):
     conn = get_db_connection()
-    # conn.execute(' FROM storage WHERE id = ?', (id,))  
-    conn.close
-    return redirect(url_for('test'))
+    conn.execute('UPDATE storage SET Quantity = Quantity - 1 WHERE id = ?', (id,))  
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index')) 
+
+
+@app.route('/<int:id>/add', methods=('GET', 'POST'))
+def add_item(id):
+    conn = get_db_connection()
+    conn.execute('UPDATE storage SET Quantity = Quantity + 1 WHERE id = ?', (id,))  
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index')) 
