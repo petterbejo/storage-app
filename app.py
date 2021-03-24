@@ -9,6 +9,9 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# Add function to remove item from db here
+
+# Add function to add item to db here
 
 app = Flask(__name__)
 
