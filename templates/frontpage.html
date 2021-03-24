@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} What's in the basement?{% endblock %}</h1>
+    <table style="width:100%">
+    {% for item in storage %}
+            <tr>
+            <td>{{ item['Category'] }}</td>
+            <td>{{ item['Article'] }}</td>
+            <td>{{ item['Quantity'] }}</td>
+            <td>{{ item['Expiry_date'] }}</td>
+            </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

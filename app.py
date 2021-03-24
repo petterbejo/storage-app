@@ -1,14 +1,19 @@
-import os
+import sqlite3
+from flask import Flask, render_template
 
-from flask import Flask
+def get_db_connection():
+    conn = sqlite3.connect('basement_db.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    target = os.environ.get('TARGET', 'World')
-    return 'Hello {}!\n'.format(target)
+def index():
+    conn = get_db_connection()
+    items = conn.execute('SELECT * FROM storage').fetchall()
+    conn.close()
+    return render_template('frontpage.html', storage=items)
 
-if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
 
