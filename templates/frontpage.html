@@ -5,10 +5,12 @@
     <table style="width:100%">
     {% for item in storage %}
             <tr>
-            <td>{{ item['Category'] }}</td>
+            <td>{{ item['Category'] }} </td>
             <td>{{ item['Article'] }}</td>
             <td>{{ item['Quantity'] }}</td>
             <td>{{ item['Expiry_date'] }}</td>
+            <td> <button type="submit" class="btn btn-primary">-</button> </td>
+            <td> <button type="submit" class="btn btn-primary">+</button> </td>
             </tr>
     {% endfor %}
     </table>
