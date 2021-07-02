@@ -1,20 +1,43 @@
 """
 Creates the database and stores the items in the provided CSV file in the database.
 """
-
-
 import sqlite3
-import pandas as pd
+import csv
+
+# create db
+# create tables
+# insert items from csv
+# close connection
 
 
-conn = sqlite3.connect('my_db.db')
+# create db
+conn = sqlite3.connect('storage_db.db')
 c = conn.cursor()
 
-# Provide the path of your CSV here (as a string):
-my_csv = ' '
+# create tables
+create_items_table = """DROP TABLE items
+                        CREATE TABLE items (
+                        item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        category_id INTEGER NOT NULL,
+                        article TEXT NOT NULL,
+                        quantity INTEGER NOT NULL,
+                        expiry_date INTEGER NOT NULL
+                        );"""
 
-read_storage = pd.read_csv(my_csv))
-read_storage.to_sql('storage', conn, if_exists='replace', index=False)
+create_categories_table = """DROP TABLE categories
+                             CREATE TABLE categories (
+                             category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                             category TEXT NOT NULL,
+                             );"""
+
+
+
+# Provide the path of your CSV here (as a string):
+storage_csv = 'in_storage_test.csv'
+
+with open(storage_csv) as f:
+
+
 
 conn.commit()
 conn.close()
