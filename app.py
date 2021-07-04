@@ -18,7 +18,12 @@ def index():
     Views the front page.
     """
     conn = get_db_connection()
-    items = conn.execute('SELECT * FROM items').fetchall()
+    items = conn.execute(
+        'SELECT item_id, categories.category, article, quantity, expiry_date '
+        'FROM items '
+        'INNER JOIN categories '
+        'ON items.category_id=categories.category_id'
+         ).fetchall()
     conn.close()
     return render_template('frontpage.html', storage=items)
 
