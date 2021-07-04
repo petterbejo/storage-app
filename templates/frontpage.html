@@ -5,12 +5,12 @@
     <table style="width:100%">
     {% for item in storage %}
             <tr>
-            <td>{{ item['Category'] }} </td>
-            <td>{{ item['Article'] }}</td>
-            <td>{{ item['Quantity'] }}</td>
-            <td>{{ item['Expiry_date'] }}</td>
-            <td> <a href="{{ url_for('remove_item', id=item['id']) }}"> <span class="btn btn-primary">-</span> </a>
-            <td> <a href="{{ url_for('add_item', id=item['id']) }}"> <span class="btn btn-primary">+</span> </a>
+            <td>{{ item['category_id'] }} </td>
+            <td>{{ item['article'] }}</td>
+            <td>{{ item['quantity'] }}</td>
+            <td>{{ item['expiry_date'] }}</td>
+            <td> <a href="{{ url_for('remove_item', id=item['item_id']) }}"> <span class="btn btn-primary">-</span> </a>
+            <td> <a href="{{ url_for('add_item', id=item['item_id']) }}"> <span class="btn btn-primary">+</span> </a>
             </tr>
     {% endfor %}
     </table>

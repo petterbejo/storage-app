@@ -18,7 +18,7 @@ def index():
     Views the front page.
     """
     conn = get_db_connection()
-    items = conn.execute('SELECT * FROM storage').fetchall()
+    items = conn.execute('SELECT * FROM items').fetchall()
     conn.close()
     return render_template('frontpage.html', storage=items)
 
@@ -26,7 +26,7 @@ def index():
 @app.route('/<int:id>/remove', methods=('GET', 'POST'))
 def remove_item(id):
     conn = get_db_connection()
-    conn.execute('UPDATE storage SET Quantity = Quantity - 1 WHERE id = ?', (id,))  
+    conn.execute('UPDATE items SET Quantity = Quantity - 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect(url_for('index')) 
@@ -35,7 +35,7 @@ def remove_item(id):
 @app.route('/<int:id>/add', methods=('GET', 'POST'))
 def add_item(id):
     conn = get_db_connection()
-    conn.execute('UPDATE storage SET Quantity = Quantity + 1 WHERE id = ?', (id,))  
+    conn.execute('UPDATE items SET Quantity = Quantity + 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect(url_for('index')) 
