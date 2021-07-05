@@ -1,22 +1,27 @@
 """
-Creates the database and stores the items in the provided CSV file in the database.
+Creates the database and stores the items in the provided CSV file in
+the database.
+
+If the database already exists, it is deleted first.
 """
+import os
 import sqlite3
 import csv
-
-# create db
-# create tables
-# insert items from csv
-# close connection
+from categories_and_csv import categories, storage_csv
 
 
-# create db
+# Delete database if exists
+if os.path.exists('storage_db.db'):
+    os.remove('storage_db.db')
+
+
+# Create new database
 conn = sqlite3.connect('storage_db.db')
 c = conn.cursor()
 
-# create tables
-create_items_table = """DROP TABLE items
-                        CREATE TABLE items (
+
+# Create tables
+create_items_table = """CREATE TABLE items (
                         item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         category_id INTEGER NOT NULL,
                         article TEXT NOT NULL,
@@ -24,20 +29,34 @@ create_items_table = """DROP TABLE items
                         expiry_date INTEGER NOT NULL
                         );"""
 
-create_categories_table = """DROP TABLE categories
-                             CREATE TABLE categories (
+create_categories_table = """CREATE TABLE categories (
                              category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                             category TEXT NOT NULL,
+                             category TEXT NOT NULL
                              );"""
 
+c.execute(create_items_table)
+c.execute(create_categories_table)
 
 
-# Provide the path of your CSV here (as a string):
-storage_csv = 'in_storage_test.csv'
+# Write your personal categories to the categories table
+for cat in categories:
+    c.execute('INSERT INTO categories VALUES (?, ?)', [cat[0], cat[1]])
 
-with open(storage_csv) as f:
 
+# Write your personal storage_csv file to the database
+with open(storage_csv) as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+        for cat in categories:
+            if row[0] == cat[1]:
+                item_cat = cat[0]
+        c.execute('INSERT INTO items '
+                  '(category_id, article, quantity, expiry_date) '
+                  'VALUES (?, ?, ?, ?) ',
+                  [item_cat, row[1], row[2], row[3]])
 
 
 conn.commit()
 conn.close()
+

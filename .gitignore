@@ -67,3 +67,6 @@ node_modules/
 
 # Pycache
 __pycache__/
+
+# File containing the user's personal categories and CSV file
+categories_and_csv.py
