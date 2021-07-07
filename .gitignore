@@ -68,5 +68,12 @@ node_modules/
 # Pycache
 __pycache__/
 
-# File containing the user's personal categories and CSV file
+# PyCharm
+.idea/
+
+# File containing the user's personal categories and CSV file, CSV files
+# and database files
 categories_and_csv.py
+*.csv
+*.db
+
