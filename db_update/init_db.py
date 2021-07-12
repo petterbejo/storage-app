@@ -9,14 +9,16 @@ import sqlite3
 import csv
 from categories_and_csv import categories, storage_csv
 
+# Assign database path to variable
+db_path = '../database/storage_db.db'
 
 # Delete database if exists
-if os.path.exists('storage_db.db'):
-    os.remove('storage_db.db')
+if os.path.exists(db_path):
+    os.remove(db_path)
 
 
 # Create new database
-conn = sqlite3.connect('storage_db.db')
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 
 
@@ -36,6 +38,7 @@ create_categories_table = """CREATE TABLE categories (
 
 c.execute(create_items_table)
 c.execute(create_categories_table)
+
 
 
 # Write your personal categories to the categories table
