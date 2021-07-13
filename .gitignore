@@ -5,7 +5,4 @@ __pycache__/
 .idea/
 
 # File containing the user's personal categories and CSV file, CSV files
-# and database files
-categories_and_csv.py
-*.csv
-
+personal_files/
