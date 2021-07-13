@@ -29,3 +29,4 @@ Here are some ideas that I'd like to implement at some point in the future:
 - View items according to category
 - A proper CI/CD pipeline that builds the images, pushes them to Docker Hub and tests the applications inside a container 
 - A way of receiving a message when an item is close to its expiry date
+- A proper handling of dependencies, e.g. with Pipenv
