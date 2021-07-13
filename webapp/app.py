@@ -5,7 +5,7 @@ def get_db_connection():
     """
     Opens a connection to the database.
     """
-    conn = sqlite3.connect('storage_db.db')
+    conn = sqlite3.connect('../database/storage_db.db')
     conn.row_factory = sqlite3.Row
     return conn
 
