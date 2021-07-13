@@ -22,3 +22,10 @@ Since the project is work in progress, I can't provide a detailed step-by-step g
     - One called storage_csv. This must be a string that refers to the CSV file created in the previous step, e.g. my_storage.csv.
 - Run the init_db.py file to create the database. Note that if you have previously run this script, re-running it will delete the database file before creating a new one. 
 
+## How will the app be improved?
+Here are some ideas that I'd like to implement at some point in the future:
+
+- I'd like to add some kind of shopping cart so I can make a list of things I wanna get before I actually physically leave my apartment (this obviously also includes an option to empty the cart if I decide to leave things where they are)
+- View items according to category
+- A proper CI/CD pipeline that builds the images, pushes them to Docker Hub and tests the applications inside a container 
+- A way of receiving a message when an item is close to its expiry date
