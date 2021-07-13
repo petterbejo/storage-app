@@ -1,6 +1,9 @@
-# A very simple storage app
+# A simple storage app
 ## What is this?
 A simple web app that I use to keep track of everything we have in our storage room in the basement. It's a Flask-based Dockerized app with a SQLite database.
+
+I'm currently working on turning this into a multi-container app. The other branches of this project are all steps on the way to achieve this.
+
 
 ## Can I use this for myself?
 Sure, it's MIT licensed, so you can basically do what you want with it. 
