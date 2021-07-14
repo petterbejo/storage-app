@@ -10,7 +10,7 @@ import csv
 from categories_and_csv import categories, storage_csv
 
 # Assign database path to variable
-db_path = '../database/storage_db.db'
+db_path = Path.cwd().parent / ('database/storage_db.db')
 
 # Delete database if exists
 if os.path.exists(db_path):
