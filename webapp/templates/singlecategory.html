@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<p><a href="{{ url_for('category_view') }}">Go back to categories page</a> </p>
 <table style="width:100%">
     {% for item in category %}
     <tr>
