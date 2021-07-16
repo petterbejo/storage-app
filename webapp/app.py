@@ -33,22 +33,22 @@ def index():
     return render_template('frontpage.html', storage=items)
 
 
-@app.route('/<int:id>/remove', methods=('GET', 'POST'))
-def remove_item(id):
+@app.route('/<int:id>/<page>/remove', methods=('GET', 'POST'))
+def remove_item(id, page):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity - 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('index'))
+    return redirect(url_for(page))
 
 
-@app.route('/<int:id>/add', methods=('GET', 'POST'))
-def add_item(id):
+@app.route('/<int:id>/<page>/add', methods=('GET', 'POST'))
+def add_item(id, page):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity + 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('index'))
+    return redirect(url_for(page))
 
 
 @app.route('/categories')
