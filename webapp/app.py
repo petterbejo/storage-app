@@ -34,21 +34,21 @@ def index():
 
 
 @app.route('/<int:id>/remove', methods=('GET', 'POST'))
-def remove_item(id, page='index'):
+def remove_item(id):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity - 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for(page))
+    return redirect(url_for('index'))
 
 
 @app.route('/<int:id>/add', methods=('GET', 'POST'))
-def add_item(id, page='index'):
+def add_item(id):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity + 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for(page))
+    return redirect(url_for('index'))
 
 
 @app.route('/categories')
