@@ -26,15 +26,15 @@ c = conn.cursor()
 # Create tables
 create_items_table = """CREATE TABLE items (
                         item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        item_name TEXT NOT NULL,
                         category_id INTEGER NOT NULL,
-                        article TEXT NOT NULL,
                         quantity INTEGER NOT NULL,
                         expiry_date INTEGER NOT NULL
                         );"""
 
 create_categories_table = """CREATE TABLE categories (
                              category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                             category TEXT NOT NULL
+                             category_name TEXT NOT NULL
                              );"""
 
 c.execute(create_items_table)
