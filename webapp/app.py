@@ -33,21 +33,27 @@ def index():
     return render_template('frontpage.html', storage=items)
 
 
+@app.route('/<int:id>/<page>/<int:category>/remove', methods=('GET', 'POST'))
 @app.route('/<int:id>/<page>/remove', methods=('GET', 'POST'))
-def remove_item(id, page):
+def remove_item(id, page, category=None):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity - 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
+    if category:
+        return redirect(url_for('single_category', category_id=1))
     return redirect(url_for(page))
 
 
+@app.route('/<int:id>/<page>/<int:category>/add', methods=('GET', 'POST'))
 @app.route('/<int:id>/<page>/add', methods=('GET', 'POST'))
-def add_item(id, page):
+def add_item(id, page, category=None):
     conn = get_db_connection()
     conn.execute('UPDATE items SET Quantity = Quantity + 1 WHERE item_id = ?', (id,))
     conn.commit()
     conn.close()
+    if category:
+        return redirect(url_for('single_category', category_id=1))
     return redirect(url_for(page))
 
 
@@ -65,18 +71,19 @@ def category_view():
     return render_template('categoryview.html', categories=items)
 
 
-@app.route('/<int:id>/category_view')
-def single_category(id):
+@app.route('/<int:category_id>/category_view')
+def single_category(category_id):
     """
     Views items of a single category.
     """
     conn = get_db_connection()
     items = conn.execute(
-        'SELECT item_id, categories.category, article, quantity, expiry_date '
+        'SELECT item_id, categories.category, article, quantity, '
+        'expiry_date, categories.category_id '
         'FROM items '
         'INNER JOIN categories '
         'ON items.category_id=categories.category_id '
-        'WHERE categories.category_id = ?', (id,)
+        'WHERE categories.category_id = ?', (category_id,)
     ).fetchall()
     conn.close()
     return render_template('singlecategory.html', category=items)
