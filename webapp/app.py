@@ -41,7 +41,7 @@ def remove_item(id, page, category=None):
     conn.commit()
     conn.close()
     if category:
-        return redirect(url_for('single_category', category_id=1))
+        return redirect(url_for('single_category', category_id=category))
     return redirect(url_for(page))
 
 
@@ -53,7 +53,7 @@ def add_item(id, page, category=None):
     conn.commit()
     conn.close()
     if category:
-        return redirect(url_for('single_category', category_id=1))
+        return redirect(url_for('single_category', category_id=category))
     return redirect(url_for(page))
 
 
