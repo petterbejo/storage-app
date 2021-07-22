@@ -89,7 +89,7 @@ def single_category(category_id):
     return render_template('singlecategory.html', category=items)
 
 
-@app.route('/bulk_update')
+@app.route('/bulk_update', methods=('GET', 'POST'))
 def bulk_update():
     """
     Reads an uploaded CSV file and appends its content to the database.
