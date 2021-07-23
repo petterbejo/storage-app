@@ -1,6 +1,7 @@
 from pathlib import Path
 import sqlite3
 from flask import Flask, render_template, request, url_for, redirect
+import csv
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
@@ -99,4 +100,6 @@ def bulk_update():
 
 @app.route('/update_completed', methods=('GET', 'POST'))
 def update_completed():
-    return 'Something has been done to the file'
+    file = request.files['file']
+    reader = file.read()
+    return f'Uploaded file is a {file.filename}, oh yeah'
