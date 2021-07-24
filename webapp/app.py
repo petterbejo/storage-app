@@ -100,6 +100,24 @@ def bulk_update():
 
 @app.route('/update_completed', methods=('GET', 'POST'))
 def update_completed():
-    file = request.files['file']
-    reader = file.read()
-    return f'Uploaded file is a {file.filename}, oh yeah'
+    """
+    Takes the uploaded file, writes each row as a list within the final
+    list, then writes each of these lists to the database.
+
+    The function does not use the CSV module because of decoding issues.
+    """
+    file = request.files['file'].read()
+    raw = file.splitlines()
+    final = []
+    for element in raw:
+        new_ele = element.decode()
+        final.append(new_ele.split(','))
+    conn = get_db_connection()
+    for row in final:
+        conn.execute('INSERT INTO items '
+                  '(category_id, article, quantity, expiry_date) '
+                  'VALUES (?, ?, ?, ?) ',
+                  [row[0], row[1], row[2], row[3]])
+    conn.commit()
+    conn.close()
+    return f'Uploaded file is a {final}, oh yeah'
