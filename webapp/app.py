@@ -117,7 +117,7 @@ def update_completed():
         conn.execute('INSERT INTO items '
                   '(category_id, article, quantity, expiry_date) '
                   'VALUES (?, ?, ?, ?) ',
-                  [row[0], row[1], row[2], row[3]])
+                  [2, row[1], row[2], row[3]])
     conn.commit()
     conn.close()
     return f'Uploaded file is a {final}, oh yeah'
