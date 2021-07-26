@@ -1,19 +1,8 @@
 from pathlib import Path
-import sqlite3
 from flask import Flask, render_template, request, url_for, redirect
-import csv
+from helper_functions import get_db_connection, get_categories
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
-
-
-def get_db_connection():
-    """
-    Opens a connection to the database.
-    """
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    return conn
-
 
 app = Flask(__name__)
 
