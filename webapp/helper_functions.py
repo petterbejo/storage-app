@@ -24,3 +24,15 @@ def get_categories():
     formatted = [category[0] for category in categories]
     return formatted
 
+
+def assign_category_id(category_name):
+    conn = get_db_connection()
+    category_id = conn.execute(
+        'SELECT category_id '
+        'FROM categories '
+        'WHERE category = ?', (category_name,)
+        ).fetchone()
+    return category_id[0]
+
+
+

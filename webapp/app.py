@@ -1,6 +1,6 @@
 from pathlib import Path
 from flask import Flask, render_template, request, url_for, redirect
-from helper_functions import get_db_connection, get_categories
+from helper_functions import get_db_connection, get_categories, assign_category_id
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
@@ -101,12 +101,17 @@ def update_completed():
     for element in raw:
         new_ele = element.decode()
         final.append(new_ele.split(','))
+    categories = get_categories()
     conn = get_db_connection()
+    omitted = []
     for row in final:
-        conn.execute('INSERT INTO items '
+        if row[0] in categories:
+            conn.execute('INSERT INTO items '
                   '(category_id, article, quantity, expiry_date) '
                   'VALUES (?, ?, ?, ?) ',
-                  [2, row[1], row[2], row[3]])
+                  [assign_category_id(row[0]), row[1], row[2], row[3]])
+        else:
+            omitted.append([row])
     conn.commit()
     conn.close()
-    return f'Uploaded file is a {final}, oh yeah'
+    return render_template('updatecompleted.html', omitted=omitted)
