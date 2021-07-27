@@ -8,8 +8,7 @@ db_path = Path.cwd().parent / ('database/storage_db.db')
 
 # Establishes the connection to the database
 def get_db_connection():
-    """
-    Opens a connection to the database.
+    """ Opens a connection to the database.
     """
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
@@ -17,7 +16,11 @@ def get_db_connection():
 
 
 # Helper functions for the bulk update
-def get_categories() -> list:
+def csv_converter(file) -> list:
+    """ Converts CSV file to list of lists.
+
+    Takes the uploaded CSV file and returns a list of lists containing
+    each article with its properties (category, quantity, expiry date).
     """
     Returns the category names in order to check if the category of the
     CSV file's article already exists in the database.
@@ -33,7 +36,8 @@ def get_categories() -> list:
 
 
 def assign_category_id(category_name):
-    """
+    """ Assign the correct category ID to an article.
+
     Substitutes an article's category name with the appropriate
     category ID.
     """

@@ -1,6 +1,14 @@
 from pathlib import Path
-from flask import Flask, render_template, request, url_for, redirect
-from helper_functions import get_db_connection, get_categories, assign_category_id
+
+from flask import Flask
+from flask import render_template
+from flask import url_for
+from flask import redirect
+
+from helper_functions import get_db_connection
+from helper_functions import get_categories
+from helper_functions import assign_category_id
+from helper_functions import csv_converter
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
@@ -9,8 +17,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    """
-    Views the front page.
+    """ Views the front page.
     """
     conn = get_db_connection()
     items = conn.execute(
@@ -49,8 +56,7 @@ def add_item(id, page, category=None):
 
 @app.route('/categories')
 def category_view():
-    """
-    Lets the user view and select all available categories.
+    """ Lets the user view and select all available categories.
     """
     conn = get_db_connection()
     items = conn.execute(
@@ -63,8 +69,7 @@ def category_view():
 
 @app.route('/<int:category_id>/category_view')
 def single_category(category_id):
-    """
-    Views items of a single category.
+    """ Views items of a single category.
     """
     conn = get_db_connection()
     items = conn.execute(
