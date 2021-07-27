@@ -63,4 +63,21 @@ def assign_category_id(category_name):
     return category_id[0]
 
 
+def already_in_storage(row) -> bool:
+    """Checks if an item is already in storage.
 
+    Checks if the item is already in storage in order to determine
+    whether we have to update the quantity of an existing item or
+    insert a new item.
+
+    Note that if an item is already in the database, but with a
+    different expiry date, the item will be written as a new item.
+    """
+    conn = get_db_connection()
+    # Select article and expiry date from items
+    # (you can also select the category id, just remember to use the
+    # assign cat id function then)
+    conn.close()
+    # iterate over this object, return True if match
+    # return False if finishes without match
+    pass

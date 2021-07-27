@@ -106,6 +106,8 @@ def run_bulk_update():
     omitted = []
     for row in converted_file:
         if row[0] in categories:
+            # Here we have to check whether the item already exists in the DB
+            # before we insert it
             conn.execute('INSERT INTO items '
                   '(category_id, article, quantity, expiry_date) '
                   'VALUES (?, ?, ?, ?) ',
