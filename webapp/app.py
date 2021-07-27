@@ -85,14 +85,14 @@ def single_category(category_id):
 
 
 @app.route('/bulk_update')
-def bulk_update():
+def bulk_update_page():
     """ Returns the page to select and upload a CSV file.
     """
     return render_template('bulkupdate.html')
 
 
-@app.route('/update_completed', methods=('GET', 'POST'))
-def update_completed():
+@app.route('/run_bulk_update', methods=('GET', 'POST'))
+def run_bulk_update():
     """ Write new content to the database from uploaded CSV file.
 
     Takes the uploaded file, writes each row as a list within the final

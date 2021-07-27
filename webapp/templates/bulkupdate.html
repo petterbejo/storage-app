@@ -5,7 +5,7 @@
 
 <p>Here we'll have the upload section and so on.</p>
 
-<form action="{{ url_for('update_completed') }}" method=post enctype=multipart/form-data>
+<form action="{{ url_for('run_bulk_update') }}" method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Update>
     </form>
