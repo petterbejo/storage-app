@@ -4,6 +4,8 @@ Helper functions to be used within the main module, app.py.
 from pathlib import Path
 import sqlite3
 
+from flask import request
+
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
 # Establishes the connection to the database
@@ -22,6 +24,16 @@ def csv_converter(file) -> list:
     Takes the uploaded CSV file and returns a list of lists containing
     each article with its properties (category, quantity, expiry date).
     """
+    raw = request.files[file].read().splitlines()
+    converted = []
+    for element in raw:
+        new_ele = element.decode()
+        converted.append(new_ele.split(','))
+    return converted
+
+def get_categories() -> list:
+    """ Return the category names.
+
     Returns the category names in order to check if the category of the
     CSV file's article already exists in the database.
     """

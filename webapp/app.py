@@ -86,30 +86,25 @@ def single_category(category_id):
 
 @app.route('/bulk_update')
 def bulk_update():
-    """
-    Reads an uploaded CSV file and appends its content to the database.
+    """ Returns the page to select and upload a CSV file.
     """
     return render_template('bulkupdate.html')
 
 
 @app.route('/update_completed', methods=('GET', 'POST'))
 def update_completed():
-    """
+    """ Write new content to the database from uploaded CSV file.
+
     Takes the uploaded file, writes each row as a list within the final
     list, then writes each of these lists to the database.
 
     The function does not use the CSV module because of decoding issues.
     """
-    file = request.files['file'].read()
-    raw = file.splitlines()
-    final = []
-    for element in raw:
-        new_ele = element.decode()
-        final.append(new_ele.split(','))
+    converted_file = csv_converter('file')
     categories = get_categories()
     conn = get_db_connection()
     omitted = []
-    for row in final:
+    for row in converted_file:
         if row[0] in categories:
             conn.execute('INSERT INTO items '
                   '(category_id, article, quantity, expiry_date) '
