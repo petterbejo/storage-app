@@ -16,7 +16,7 @@ Since the project is work in progress, I can't provide a detailed step-by-step g
 
 - Get the images from my repo on Docker Hub. Git clone this repository (if you want to build the images yourself).
 - Provide your own categories and storage list:
-  - Create a CSV file that lists all the items you currently have in your storage, and save it in the project's main directory. The CSV file must have the following columns, in this particular order: Category, article, quantity, expiry date. To keep things simple, the expiry date is simply formatted as YYMM. If the item does not have an expiry date, I suggest you set it to 9999.
+  - Create a CSV file that lists all the items you currently have in your storage, and save it in the project's main directory. The CSV file must have the following columns, in this particular order: Category, article, quantity, expiry date. To keep things simple, the expiry date is simply formatted as YYMM. If the item does not have an expiry date, I suggest you set it to 9999. The delimiter must be a semi-colon.
   -  Create a .py file called 'categories_and_csv.py'(the name of the file is already in the gitignore since it contains the user's personal categories). In this file, you create two variables:
     - One called categories, which must be a list of lists. Each list within the list must have the following format: [category_id, category_name]. The category_id must be an integer, and the category_name should be a string.
     - One called storage_csv. This must be a string that refers to the CSV file created in the previous step, e.g. my_storage.csv.

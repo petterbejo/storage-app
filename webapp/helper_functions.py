@@ -28,7 +28,7 @@ def csv_converter(file) -> list:
     converted = []
     for element in raw:
         new_ele = element.decode()
-        converted.append(new_ele.split(','))
+        converted.append(new_ele.split(';'))
     return converted
 
 def get_categories() -> list:
