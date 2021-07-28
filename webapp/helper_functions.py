@@ -74,10 +74,12 @@ def already_in_storage(row) -> bool:
     different expiry date, the item will be written as a new item.
     """
     conn = get_db_connection()
-    # Select article and expiry date from items
-    # (you can also select the category id, just remember to use the
-    # assign cat id function then)
+    in_storage_now = conn.execute(
+        'SELECT article, expiry_date '
+        'FROM items '
+         ).fetchall()
     conn.close()
+
     # iterate over this object, return True if match
     # return False if finishes without match
     pass
