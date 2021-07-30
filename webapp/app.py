@@ -27,7 +27,9 @@ def index():
         'ON items.category_id=categories.category_id'
          ).fetchall()
     conn.close()
-    return render_template('frontpage.html', storage=items)
+    num_articles = len(items)
+    return render_template('frontpage.html',
+                           storage=items, num_articles=num_articles)
 
 
 @app.route('/<int:id>/<page>/<int:category>/remove', methods=('GET', 'POST'))
