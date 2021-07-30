@@ -79,7 +79,7 @@ def already_in_storage(row) -> bool:
         'FROM items '
          ).fetchall()
     conn.close()
-
-    # iterate over this object, return True if match
-    # return False if finishes without match
-    pass
+    for item in in_storage_now:
+        if item[0] == row[1] and item[1] == row[3]:
+            return True
+    return False
