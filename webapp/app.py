@@ -25,7 +25,8 @@ def index():
         'SELECT item_id, categories.category, article, quantity, expiry_date '
         'FROM items '
         'INNER JOIN categories '
-        'ON items.category_id=categories.category_id'
+        'ON items.category_id=categories.category_id '
+        'ORDER BY category'
          ).fetchall()
     conn.close()
     num_articles = len(items)
@@ -64,7 +65,8 @@ def category_view():
     conn = get_db_connection()
     items = conn.execute(
         'SELECT * '
-        'FROM categories'
+        'FROM categories '
+        'ORDER BY category'
     ).fetchall()
     conn.close()
     return render_template('categoryview.html', categories=items)
@@ -81,7 +83,8 @@ def single_category(category_id):
         'FROM items '
         'INNER JOIN categories '
         'ON items.category_id=categories.category_id '
-        'WHERE categories.category_id = ?', (category_id,)
+        'WHERE categories.category_id = ? '
+        'ORDER BY article', (category_id,)
     ).fetchall()
     conn.close()
     return render_template('singlecategory.html', category=items)
