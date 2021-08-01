@@ -83,3 +83,24 @@ def already_in_storage(row) -> bool:
         if item[0] == row[1] and item[1] == row[3]:
             return True
     return False
+
+
+def get_item_id(row) -> int:
+    """Returns the primary key of an existing item.
+
+    Takes a row of the uploaded CSV file as an argument. The row must
+    be of an item that has been confirmed to be in storage already.
+
+    The function then compares the row to the content of the database
+    and returns the primary key, item_id, of the item."""
+    conn = get_db_connection()
+    in_storage_now = conn.execute(
+        'SELECT item_id, article, expiry_date '
+        'FROM items '
+        ).fetchall()
+    conn.close()
+    for item in in_storage_now:
+        if item[1] == row[1] and item[2] == row[3]:
+            return item[0]
+
+
