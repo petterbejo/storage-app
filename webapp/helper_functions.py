@@ -80,7 +80,7 @@ def already_in_storage(row) -> bool:
          ).fetchall()
     conn.close()
     for item in in_storage_now:
-        if item[0] == row[1] and item[1] == row[3]:
+        if str(item[0]) == str(row[1]) and str(item[1]) == str(row[3]):
             return True
     return False
 
