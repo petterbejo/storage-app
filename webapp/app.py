@@ -10,6 +10,7 @@ from helper_functions import get_categories
 from helper_functions import assign_category_id
 from helper_functions import csv_converter
 from helper_functions import already_in_storage
+from helper_functions import get_item_id
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
@@ -113,10 +114,10 @@ def run_bulk_update():
     for row in converted_file:
         if row[0] in categories:
             if already_in_storage(row):
+                item_id = get_item_id(row)
                 conn.execute('UPDATE items '
                       'SET Quantity = Quantity + ? '
-                      'WHERE article = ? '
-                      'AND expiry_date = ?', (row[2], row[1], row[3]))
+                      'WHERE item_id = ? ', (row[2], item_id, ))
             else:
                 conn.execute('INSERT INTO items '
                       '(category_id, article, quantity, expiry_date) '

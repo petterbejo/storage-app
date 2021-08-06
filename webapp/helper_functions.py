@@ -100,7 +100,7 @@ def get_item_id(row) -> int:
         ).fetchall()
     conn.close()
     for item in in_storage_now:
-        if item[1] == row[1] and item[2] == row[3]:
+        if str(item[1]) == str(row[1]) and str(item[2]) == str(row[3]):
             return item[0]
 
 
