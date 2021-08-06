@@ -13,5 +13,14 @@
     {% endfor %}
 </table>
 <p></p>
+<p>These items were already in the database (with the same expiry date), and the quantity has been updated:</p>
+<table style="width:100%">
+    {% for article in updated %}
+    <tr>
+        <td>{{ article[0] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+<p></p>
 <p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
 {% endblock %}

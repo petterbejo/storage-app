@@ -111,6 +111,7 @@ def run_bulk_update():
     categories = get_categories()
     conn = get_db_connection()
     omitted = []
+    updated = []
     for row in converted_file:
         if row[0] in categories:
             if already_in_storage(row):
@@ -118,6 +119,7 @@ def run_bulk_update():
                 conn.execute('UPDATE items '
                       'SET Quantity = Quantity + ? '
                       'WHERE item_id = ? ', (row[2], item_id, ))
+                updated.append([row])
             else:
                 conn.execute('INSERT INTO items '
                       '(category_id, article, quantity, expiry_date) '
@@ -128,4 +130,4 @@ def run_bulk_update():
             omitted.append([row])
     conn.commit()
     conn.close()
-    return render_template('updatecompleted.html', omitted=omitted)
+    return render_template('updatecompleted.html', omitted=omitted, updated=updated)
