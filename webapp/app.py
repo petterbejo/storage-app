@@ -131,3 +131,12 @@ def run_bulk_update():
     conn.commit()
     conn.close()
     return render_template('updatecompleted.html', omitted=omitted, updated=updated)
+
+
+@app.route('/initialize-database')
+def initialize_database():
+    return render_template('initialize_db.html')
+
+@app.route('/confirm-init')
+def confirm_init():
+    return 'Here you have to confirm'
