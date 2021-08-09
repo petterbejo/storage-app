@@ -133,10 +133,10 @@ def run_bulk_update():
     return render_template('updatecompleted.html', omitted=omitted, updated=updated)
 
 
-@app.route('/initialize-database')
+@app.route('/initialize_database')
 def initialize_database():
     return render_template('initialize_db.html')
 
-@app.route('/confirm-init')
+@app.route('/confirm_init')
 def confirm_init():
     return 'Here you have to confirm'

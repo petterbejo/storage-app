@@ -4,7 +4,7 @@
 
 <p>WARNING: If you click the button below, it will start the process of initializing the whole database!</p>
 
-<button type="button" onclick="alert('Hello world!')">Start initializing the database!</button>
+<button type="button" onclick="window.location.href='{{ url_for('confirm_init') }}' ">Start initializing the database!</button>
 
 <p></p>
 <p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
