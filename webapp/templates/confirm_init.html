@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>WARNING: Please confirm that you want to initialize the database. This action cannot be undone!</p>
+
+<button type="button" onclick="window.location.href='{{ url_for('run_db_init') }}' ">Confirm that you want to initialize your database</button>
+
+<p></p>
+<p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
+
+{% endblock %}

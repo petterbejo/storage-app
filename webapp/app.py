@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from flask import Flask
@@ -139,4 +140,28 @@ def initialize_database():
 
 @app.route('/confirm_init')
 def confirm_init():
-    return 'Here you have to confirm'
+    return render_template('confirm_init.html')
+
+@app.route('/run_db_init')
+def run_db_init():
+    if os.path.exists(db_path):
+        os.remove(db_path)
+    conn = get_db_connection()
+    create_items_table = """CREATE TABLE items (
+                            item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            category_id INTEGER NOT NULL,
+                            article TEXT NOT NULL,
+                            quantity INTEGER NOT NULL,
+                            expiry_date INTEGER NOT NULL
+                            );"""
+
+    create_categories_table = """CREATE TABLE categories (
+                                 category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                 category TEXT NOT NULL
+                                 );"""
+    c = conn.cursor()
+    c.execute(create_items_table)
+    c.execute(create_categories_table)
+    conn.commit()
+    conn.close()
+    return 'Now we run the db init process'
