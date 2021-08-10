@@ -134,18 +134,16 @@ def run_bulk_update():
     return render_template('updatecompleted.html', omitted=omitted, updated=updated)
 
 
-@app.route('/initialize_database')
-def initialize_database():
-    return render_template('initialize_db.html')
+@app.route('/setup_database')
+def setup_database():
+    return render_template('setup_db.html')
 
-@app.route('/confirm_init')
-def confirm_init():
-    return render_template('confirm_init.html')
+@app.route('/confirm_setup')
+def confirm_setup():
+    return render_template('confirm_setup.html')
 
-@app.route('/run_db_init')
-def run_db_init():
-    if os.path.exists(db_path):
-        os.remove(db_path)
+@app.route('/run_db_setup')
+def run_db_setup():
     conn = get_db_connection()
     create_items_table = """CREATE TABLE items (
                             item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

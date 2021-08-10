@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>WARNING: If you click the button below, it will start the process of setting up the database!</p>
+
+<button type="button" onclick="window.location.href='{{ url_for('confirm_setup') }}' ">Start setting up the database!</button>
+
+<p></p>
+<p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
+
+{% endblock %}
