@@ -104,3 +104,8 @@ def get_item_id(row) -> int:
             return item[0]
 
 
+def categories_to_list(file) -> list:
+    raw = request.form[file]
+    return raw.split(', ')
+
+

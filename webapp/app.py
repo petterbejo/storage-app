@@ -12,6 +12,7 @@ from helper_functions import assign_category_id
 from helper_functions import csv_converter
 from helper_functions import already_in_storage
 from helper_functions import get_item_id
+from helper_functions import categories_to_list
 
 db_path = Path.cwd().parent / ('database/storage_db.db')
 
@@ -172,4 +173,5 @@ def create_categories():
 
 @app.route('/run_categories_insert', methods=('GET', 'POST'))
 def run_categories_insert():
-    return 'Ran the cat insert'
+    categories = categories_to_list('categories')
+    return f'Ran the cat insert with {categories}'
