@@ -162,4 +162,14 @@ def run_db_setup():
     c.execute(create_categories_table)
     conn.commit()
     conn.close()
-    return 'Now we run the db init process'
+    return render_template('create_categories.html')
+
+
+@app.route('/create_categories')
+def create_categories():
+    return render_template('create_categories.html')
+
+
+@app.route('/run_categories_insert', methods=('GET', 'POST'))
+def run_categories_insert():
+    return 'Ran the cat insert'
