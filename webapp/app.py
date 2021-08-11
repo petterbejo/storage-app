@@ -184,4 +184,10 @@ def create_categories():
 @app.route('/run_categories_insert', methods=('GET', 'POST'))
 def run_categories_insert():
     categories = categories_to_list('categories')
+    conn = get_db_connection()
+    c = conn.cursor()
+    for category in categories:
+        c.execute('INSERT INTO categories (category) VALUES (?)', (category,))
+    conn.commit()
+    conn.close()
     return f'Ran the cat insert with {categories}'
