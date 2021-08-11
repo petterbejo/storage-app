@@ -4,6 +4,8 @@
 
 <p>WARNING: If you click the button below, it will start the process of setting up the database!</p>
 
+<p>This process should only be run at the initial setup of the app. If you only wish to add more categories, you can do so <a href="{{ url_for('create_categories') }}">here</a>.</p>
+
 <button type="button" onclick="window.location.href='{{ url_for('confirm_setup') }}' ">Start setting up the database!</button>
 
 <p></p>
