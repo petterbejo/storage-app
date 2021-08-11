@@ -178,11 +178,13 @@ def run_db_setup():
 
 @app.route('/create_categories')
 def create_categories():
+    """Returns the page to add categories."""
     return render_template('create_categories.html')
 
 
 @app.route('/run_categories_insert', methods=('GET', 'POST'))
 def run_categories_insert():
+    """Inserts the categories added by the user into the table."""
     categories = categories_to_list('categories')
     conn = get_db_connection()
     c = conn.cursor()

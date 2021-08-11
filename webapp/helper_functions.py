@@ -10,8 +10,7 @@ db_path = Path.cwd().parent / ('database/storage_db.db')
 
 # Establishes the connection to the database
 def get_db_connection():
-    """ Opens a connection to the database.
-    """
+    """ Opens a connection to the database. """
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
@@ -105,6 +104,7 @@ def get_item_id(row) -> int:
 
 
 def categories_to_list(file) -> list:
+    """Takes the HTML input and converts it to a Python list."""
     raw = request.form[file]
     return raw.split(', ')
 
