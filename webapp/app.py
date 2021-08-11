@@ -137,14 +137,24 @@ def run_bulk_update():
 
 @app.route('/setup_database')
 def setup_database():
+    """Returns the first page of the DB setup process"""
     return render_template('setup_db.html')
 
 @app.route('/confirm_setup')
 def confirm_setup():
+    """Returns the second page of the DB setup process.
+
+    Clicking the button on the page sets off the setup process.
+    """
     return render_template('confirm_setup.html')
 
 @app.route('/run_db_setup')
 def run_db_setup():
+    """Runs the DB setup process.
+
+    The setup process is intended to be run only at the initial setup
+    of the app - running this process when the tables already exist
+    will result in an error. """
     conn = get_db_connection()
     create_items_table = """CREATE TABLE items (
                             item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
