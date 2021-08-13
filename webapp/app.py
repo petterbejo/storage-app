@@ -192,4 +192,4 @@ def run_categories_insert():
         c.execute('INSERT INTO categories (category) VALUES (?)', (category,))
     conn.commit()
     conn.close()
-    return f'Ran the cat insert with {categories}'
+    return f'Inserted the following categories: {categories}'
