@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from flask import Flask
@@ -192,4 +191,9 @@ def run_categories_insert():
         c.execute('INSERT INTO categories (category) VALUES (?)', (category,))
     conn.commit()
     conn.close()
-    return f'Inserted the following categories: {categories}'
+    return redirect(url_for('confirm_categories'))
+
+
+@app.route('/confirm_categories')
+def confirm_categories():
+    return render_template('confirm_categories.html')
