@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p><a href="{{ url_for('category_view') }}">Go back to categories page</a> </p>
+<table style="width:100%">
+    {% for item in category %}
+    <tr>
+        <td>{{ item['category'] }} </td>
+        <td>{{ item['article'] }}</td>
+        <td>{{ item['quantity'] }}</td>
+        <td>{{ item['expiry_date'] }}</td>
+        <td> <a href="{{ url_for('remove_item', id=item['item_id'], page='category_view', category=item['category_id']) }}"> <span class="btn btn-primary">-</span> </a>
+        <td> <a href="{{ url_for('add_item', id=item['item_id'], page='category_view', category=item['category_id']) }}"> <span class="btn btn-primary">+</span> </a>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

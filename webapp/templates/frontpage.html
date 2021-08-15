@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} What's in storage?{% endblock %}</h1>
+    <p>There are currently {{ num_articles }} different articles in storage.</p>
+    <p><a href="{{ url_for('category_view') }}">View items according to category</a> </p>
+    <p><a href="{{ url_for('bulk_update_page') }}">Make a bulk update with a CSV file</a> </p>
+    <table style="width:100%">
+    {% for item in storage %}
+            <tr>
+            <td>{{ item['category'] }} </td>
+            <td>{{ item['article'] }}</td>
+            <td>{{ item['quantity'] }}</td>
+            <td>{{ item['expiry_date'] }}</td>
+            <td> <a href="{{ url_for('remove_item', id=item['item_id'], page='index') }}"> <span class="btn btn-primary">-</span> </a>
+            <td> <a href="{{ url_for('add_item', id=item['item_id'], page='index') }}"> <span class="btn btn-primary">+</span> </a>
+            </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

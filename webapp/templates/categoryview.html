@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p><a href="{{ url_for('index') }}">Go back to main page</a> </p>
+<table style="width:100%">
+    {% for category in categories %}
+    <tr>
+        <td><a href="{{ url_for('single_category', category_id=category['category_id']) }}"> {{ category['category'] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

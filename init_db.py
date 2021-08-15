@@ -4,38 +4,42 @@ the database.
 
 If the database already exists, it is deleted first.
 """
+from pathlib import Path
 import os
 import sqlite3
 import csv
 from categories_and_csv import categories, storage_csv
 
+# Assign database path to variable
+db_path = Path.cwd() / ('database/storage_db.db')
 
 # Delete database if exists
-if os.path.exists('storage_db.db'):
-    os.remove('storage_db.db')
+if os.path.exists(db_path):
+    os.remove(db_path)
 
 
 # Create new database
-conn = sqlite3.connect('storage_db.db')
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 
 
 # Create tables
 create_items_table = """CREATE TABLE items (
                         item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        item_name TEXT NOT NULL,
                         category_id INTEGER NOT NULL,
-                        article TEXT NOT NULL,
                         quantity INTEGER NOT NULL,
                         expiry_date INTEGER NOT NULL
                         );"""
 
 create_categories_table = """CREATE TABLE categories (
                              category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                             category TEXT NOT NULL
+                             category_name TEXT NOT NULL
                              );"""
 
 c.execute(create_items_table)
 c.execute(create_categories_table)
+
 
 
 # Write your personal categories to the categories table
