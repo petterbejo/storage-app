@@ -173,7 +173,7 @@ def run_db_setup():
     c.execute(create_categories_table)
     conn.commit()
     conn.close()
-    return render_template('create_categories.html')
+    return redirect(url_for('create_categories'))
 
 
 @app.route('/create_categories')
