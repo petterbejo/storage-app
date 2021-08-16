@@ -197,3 +197,20 @@ def run_categories_insert():
 @app.route('/confirm_categories')
 def confirm_categories():
     return render_template('confirm_categories.html')
+
+
+@app.route('/export_view')
+def export_view():
+    """ Views the export page that allows copy-pasting all DB content"""
+    conn = get_db_connection()
+    items = conn.execute(
+        'SELECT item_id, categories.category, article, quantity, expiry_date '
+        'FROM items '
+        'INNER JOIN categories '
+        'ON items.category_id=categories.category_id '
+        'ORDER BY category'
+    ).fetchall()
+    conn.close()
+    num_articles = len(items)
+    return render_template('export_view.html',
+                           storage=items, num_articles=num_articles)
