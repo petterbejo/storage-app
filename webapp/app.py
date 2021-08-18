@@ -1,4 +1,4 @@
-from pathlib import Path
+"""Main script for the app"""
 
 from flask import Flask
 from flask import render_template
@@ -12,8 +12,6 @@ from helper_functions import csv_converter
 from helper_functions import already_in_storage
 from helper_functions import get_item_id
 from helper_functions import categories_to_list
-
-db_path = Path.cwd().parent / ('database/storage_db.db')
 
 app = Flask(__name__)
 
