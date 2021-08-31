@@ -1,4 +1,4 @@
-from pathlib import Path
+"""Main script for the app"""
 
 from flask import Flask
 from flask import render_template
@@ -11,8 +11,7 @@ from helper_functions import assign_category_id
 from helper_functions import csv_converter
 from helper_functions import already_in_storage
 from helper_functions import get_item_id
-
-db_path = Path.cwd().parent / ('database/storage_db.db')
+from helper_functions import categories_to_list
 
 app = Flask(__name__)
 
@@ -131,3 +130,85 @@ def run_bulk_update():
     conn.commit()
     conn.close()
     return render_template('updatecompleted.html', omitted=omitted, updated=updated)
+
+
+@app.route('/setup_database')
+def setup_database():
+    """Returns the first page of the DB setup process"""
+    return render_template('setup_db.html')
+
+@app.route('/confirm_setup')
+def confirm_setup():
+    """Returns the second page of the DB setup process.
+
+    Clicking the button on the page sets off the setup process.
+    """
+    return render_template('confirm_setup.html')
+
+@app.route('/run_db_setup')
+def run_db_setup():
+    """Runs the DB setup process.
+
+    The setup process is intended to be run only at the initial setup
+    of the app - running this process when the tables already exist
+    will result in an error. """
+    conn = get_db_connection()
+    create_items_table = """CREATE TABLE items (
+                            item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            category_id INTEGER NOT NULL,
+                            article TEXT NOT NULL,
+                            quantity INTEGER NOT NULL,
+                            expiry_date INTEGER NOT NULL
+                            );"""
+
+    create_categories_table = """CREATE TABLE categories (
+                                 category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                 category TEXT NOT NULL
+                                 );"""
+    c = conn.cursor()
+    c.execute(create_items_table)
+    c.execute(create_categories_table)
+    conn.commit()
+    conn.close()
+    return redirect(url_for('create_categories'))
+
+
+@app.route('/create_categories')
+def create_categories():
+    """Returns the page to add categories."""
+    return render_template('create_categories.html')
+
+
+@app.route('/run_categories_insert', methods=('GET', 'POST'))
+def run_categories_insert():
+    """Inserts the categories added by the user into the table."""
+    categories = categories_to_list('categories')
+    conn = get_db_connection()
+    c = conn.cursor()
+    for category in categories:
+        c.execute('INSERT INTO categories (category) VALUES (?)', (category,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('confirm_categories'))
+
+
+@app.route('/confirm_categories')
+def confirm_categories():
+    return render_template('confirm_categories.html')
+
+
+@app.route('/export_view')
+def export_view():
+    """ Views the export page that allows copy-pasting all DB content"""
+    conn = get_db_connection()
+    items = conn.execute(
+        'SELECT item_id, categories.category, article, quantity, expiry_date '
+        'FROM items '
+        'INNER JOIN categories '
+        'ON items.category_id=categories.category_id '
+        'ORDER BY category'
+    ).fetchall()
+    conn.close()
+    num_articles = len(items)
+    return render_template('export_view.html',
+                           storage=items, num_articles=num_articles)

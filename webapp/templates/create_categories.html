@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<form action="{{ url_for('run_categories_insert') }}" method=post enctype=multipart/form-data>
+  <label for="categories">Please enter the categories for your items in storage, separated by a comma:</label>
+  <input type=text id=categories name=categories><br><br>
+  <input type=submit value='Create categories'>
+</form>
+
+<p></p>
+<p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
+
+{% endblock %}

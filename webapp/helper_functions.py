@@ -6,12 +6,11 @@ import sqlite3
 
 from flask import request
 
-db_path = Path.cwd().parent / ('database/storage_db.db')
+db_path = Path.cwd() / ('storage_db.db')
 
 # Establishes the connection to the database
 def get_db_connection():
-    """ Opens a connection to the database.
-    """
+    """ Opens a connection to the database. """
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
@@ -102,5 +101,11 @@ def get_item_id(row) -> int:
     for item in in_storage_now:
         if str(item[1]) == str(row[1]) and str(item[2]) == str(row[3]):
             return item[0]
+
+
+def categories_to_list(file) -> list:
+    """Takes the HTML input and converts it to a Python list."""
+    raw = request.form[file]
+    return raw.split(', ')
 
 
