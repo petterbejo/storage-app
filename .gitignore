@@ -4,5 +4,5 @@ __pycache__/
 # PyCharm
 .idea/
 
-# File containing the user's personal categories and CSV file, CSV files
+# Directory containing personal test files
 personal_files/
