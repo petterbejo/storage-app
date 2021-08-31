@@ -6,7 +6,7 @@ import sqlite3
 
 from flask import request
 
-db_path = Path.cwd() / ('storage_db.db')
+db_path = Path.cwd().joinpath('database', 'storage_db.db')
 
 # Establishes the connection to the database
 def get_db_connection():
