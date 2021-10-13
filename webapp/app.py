@@ -154,7 +154,7 @@ def run_db_setup():
     will result in an error. """
     conn = get_db_connection()
     create_items_table = """CREATE TABLE items (
-                            item_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            item_id SERIAL PRIMARY KEY,
                             category_id INTEGER NOT NULL,
                             article TEXT NOT NULL,
                             quantity INTEGER NOT NULL,
@@ -162,7 +162,7 @@ def run_db_setup():
                             );"""
 
     create_categories_table = """CREATE TABLE categories (
-                                 category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                 category_id SERIAL PRIMARY KEY,
                                  category TEXT NOT NULL
                                  );"""
     c = conn.cursor()

@@ -4,3 +4,4 @@ python_version = '3.9'
 [packages]
 Flask = "*"
 gunicorn = "*"
+psycopg2-binary = '*'
