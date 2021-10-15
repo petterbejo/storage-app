@@ -21,13 +21,22 @@ def index():
     """ Views the front page.
     """
     conn = get_db_connection()
-    items = conn.execute(
+    print(f'conn obj: {conn}')
+    c = conn.cursor()
+    print(f'Cursor obj: {c}. Name: {c.name}. Type: {type(c)}Closed? {c.closed}')
+    """
+    items = c.execute(
         'SELECT item_id, categories.category, article, quantity, expiry_date '
         'FROM items '
         'INNER JOIN categories '
-        'ON items.category_id=categories.category_id '
+        'ON items.category_id = categories.category_id '
         'ORDER BY category'
          ).fetchall()
+    """
+    items_query = 'SELECT * FROM items'
+    c.execute(items_query)
+    items = c.fetchall()
+    c.close()
     conn.close()
     num_articles = len(items)
     return render_template('frontpage.html',
@@ -63,11 +72,13 @@ def category_view():
     """ Lets the user view and select all available categories.
     """
     conn = get_db_connection()
-    items = conn.execute(
+    c = conn.cursor()
+    items = c.execute(
         'SELECT * '
         'FROM categories '
-        'ORDER BY category'
-    ).fetchall()
+        'ORDER BY category;'
+    ).fetchone()
+    c.close()
     conn.close()
     return render_template('categoryview.html', categories=items)
 
@@ -153,7 +164,9 @@ def run_db_setup():
     of the app - running this process when the tables already exist
     will result in an error. """
     conn = get_db_connection()
-    create_items_table = """CREATE TABLE items (
+    c = conn.cursor()
+    c.execute("""DROP TABLE items;""")
+    create_items_table = """CREATE TABLE IF NOT EXISTS items (
                             item_id SERIAL PRIMARY KEY,
                             category_id INTEGER NOT NULL,
                             article TEXT NOT NULL,
@@ -161,11 +174,10 @@ def run_db_setup():
                             expiry_date INTEGER NOT NULL
                             );"""
 
-    create_categories_table = """CREATE TABLE categories (
+    create_categories_table = """CREATE TABLE IF NOT EXISTS categories (
                                  category_id SERIAL PRIMARY KEY,
                                  category TEXT NOT NULL
                                  );"""
-    c = conn.cursor()
     c.execute(create_items_table)
     c.execute(create_categories_table)
     conn.commit()
@@ -186,8 +198,9 @@ def run_categories_insert():
     conn = get_db_connection()
     c = conn.cursor()
     for category in categories:
-        c.execute('INSERT INTO categories (category) VALUES (?)', (category,))
+        c.execute('INSERT INTO categories (category) VALUES (%s);', (category,))
     conn.commit()
+    c.close()
     conn.close()
     return redirect(url_for('confirm_categories'))
 
