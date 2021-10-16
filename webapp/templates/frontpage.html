@@ -8,12 +8,12 @@
     <table style="width:100%">
     {% for item in storage %}
             <tr>
-            <td>{{ item['category'] }} </td>
-            <td>{{ item['article'] }}</td>
-            <td>{{ item['quantity'] }}</td>
-            <td>{{ item['expiry_date'] }}</td>
-            <td> <a href="{{ url_for('remove_item', id=item['item_id'], page='index') }}"> <span class="btn btn-primary">-</span> </a>
-            <td> <a href="{{ url_for('add_item', id=item['item_id'], page='index') }}"> <span class="btn btn-primary">+</span> </a>
+            <td>{{ item[1] }} </td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td> <a href="{{ url_for('remove_item', id=item[0], page='index') }}"> <span class="btn btn-primary">-</span> </a>
+            <td> <a href="{{ url_for('add_item', id=item[0], page='index') }}"> <span class="btn btn-primary">+</span> </a>
             </tr>
     {% endfor %}
     </table>

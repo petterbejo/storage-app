@@ -40,10 +40,12 @@ def get_categories() -> list:
     CSV file's article already exists in the database.
     """
     conn = get_db_connection()
-    categories = conn.execute(
+    cur = conn.cursor()
+    cur.execute(
         'SELECT category '
         'FROM categories'
-        ).fetchall()
+        )
+    categories = cur.fetchall()
     formatted = [category[0] for category in categories]
     conn.close()
     return formatted
@@ -56,11 +58,12 @@ def assign_category_id(category_name):
     category ID.
     """
     conn = get_db_connection()
-    category_id = conn.execute(
-        'SELECT category_id '
-        'FROM categories '
-        'WHERE category = ?', (category_name,)
-        ).fetchone()
+    c = conn.cursor()
+    query = """SELECT category_id 
+        FROM categories 
+        WHERE category = %s"""
+    c.execute(query, (category_name,))
+    category_id = c.fetchall()
     conn.close()
     return category_id[0]
 
@@ -76,10 +79,13 @@ def already_in_storage(row) -> bool:
     different expiry date, the item will be written as a new item.
     """
     conn = get_db_connection()
-    in_storage_now = conn.execute(
+    c = conn.cursor()
+    c.execute(
         'SELECT article, expiry_date '
         'FROM items '
-         ).fetchall()
+         )
+    in_storage_now = c.fetchall()
+    c.close()
     conn.close()
     for item in in_storage_now:
         if str(item[0]) == str(row[1]) and str(item[1]) == str(row[3]):

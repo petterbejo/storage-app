@@ -21,22 +21,22 @@ def index():
     """ Views the front page.
     """
     conn = get_db_connection()
-    print(f'conn obj: {conn}')
-    c = conn.cursor()
-    print(f'Cursor obj: {c}. Name: {c.name}. Type: {type(c)}Closed? {c.closed}')
-    """
-    items = c.execute(
-        'SELECT item_id, categories.category, article, quantity, expiry_date '
-        'FROM items '
-        'INNER JOIN categories '
-        'ON items.category_id = categories.category_id '
-        'ORDER BY category'
-         ).fetchall()
-    """
-    items_query = 'SELECT * FROM items'
-    c.execute(items_query)
-    items = c.fetchall()
-    c.close()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT 
+            item_id, 
+            categories.category, 
+            article, 
+            quantity, 
+            expiry_date 
+        FROM items 
+        INNER JOIN categories 
+        ON items.category_id = categories.category_id 
+        ORDER BY 
+            category,
+            article""")
+    items = cur.fetchall()
+    cur.close()
     conn.close()
     num_articles = len(items)
     return render_template('frontpage.html',
@@ -47,8 +47,14 @@ def index():
 @app.route('/<int:id>/<page>/remove', methods=('GET', 'POST'))
 def remove_item(id, page, category=None):
     conn = get_db_connection()
-    conn.execute('UPDATE items SET Quantity = Quantity - 1 WHERE item_id = ?', (id,))
+    cur = conn.cursor()
+    cur.execute(
+        """UPDATE items 
+           SET Quantity = Quantity - 1 
+           WHERE item_id = %s""",
+        (id,))
     conn.commit()
+    cur.close()
     conn.close()
     if category:
         return redirect(url_for('single_category', category_id=category))
@@ -59,8 +65,14 @@ def remove_item(id, page, category=None):
 @app.route('/<int:id>/<page>/add', methods=('GET', 'POST'))
 def add_item(id, page, category=None):
     conn = get_db_connection()
-    conn.execute('UPDATE items SET Quantity = Quantity + 1 WHERE item_id = ?', (id,))
+    cur = conn.cursor()
+    cur.execute(
+        """UPDATE items 
+           SET Quantity = Quantity + 1 
+           WHERE item_id = %s""",
+        (id,))
     conn.commit()
+    cur.close()
     conn.close()
     if category:
         return redirect(url_for('single_category', category_id=category))
@@ -72,13 +84,15 @@ def category_view():
     """ Lets the user view and select all available categories.
     """
     conn = get_db_connection()
-    c = conn.cursor()
-    items = c.execute(
-        'SELECT * '
-        'FROM categories '
-        'ORDER BY category;'
-    ).fetchone()
-    c.close()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT 
+                DISTINCT ON (category) category,
+                category_id 
+           FROM categories 
+           ORDER BY category;""")
+    items = cur.fetchall()
+    cur.close()
     conn.close()
     return render_template('categoryview.html', categories=items)
 
@@ -88,15 +102,23 @@ def single_category(category_id):
     """ Views items of a single category.
     """
     conn = get_db_connection()
-    items = conn.execute(
-        'SELECT item_id, categories.category, article, quantity, '
-        'expiry_date, categories.category_id '
-        'FROM items '
-        'INNER JOIN categories '
-        'ON items.category_id=categories.category_id '
-        'WHERE categories.category_id = ? '
-        'ORDER BY article', (category_id,)
-    ).fetchall()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT 
+                item_id, 
+                categories.category, 
+                article, 
+                quantity,
+                expiry_date, 
+                categories.category_id 
+           FROM items 
+           INNER JOIN categories 
+           ON items.category_id=categories.category_id 
+           WHERE categories.category_id = %s
+           ORDER BY article""",
+        (category_id,))
+    items = cur.fetchall()
+    cur.close()
     conn.close()
     return render_template('singlecategory.html', category=items)
 
@@ -120,6 +142,7 @@ def run_bulk_update():
     converted_file = csv_converter('file')
     categories = get_categories()
     conn = get_db_connection()
+    cur = conn.cursor()
     omitted = []
     updated = []
     for row in converted_file:
@@ -131,10 +154,18 @@ def run_bulk_update():
                       'WHERE item_id = ? ', (row[2], item_id, ))
                 updated.append([row])
             else:
-                conn.execute('INSERT INTO items '
-                      '(category_id, article, quantity, expiry_date) '
-                      'VALUES (?, ?, ?, ?) ',
-                      [assign_category_id(row[0]), row[1], row[2], row[3]])
+                cur.execute(
+                    """INSERT INTO items 
+                                    (category_id, 
+                                    article, 
+                                    quantity, 
+                                    expiry_date) 
+                        VALUES (%s, %s, %s, %s) """,
+                    [assign_category_id(
+                        row[0]),
+                        row[1],
+                        row[2],
+                        row[3]])
 
         else:
             omitted.append([row])
@@ -164,23 +195,20 @@ def run_db_setup():
     of the app - running this process when the tables already exist
     will result in an error. """
     conn = get_db_connection()
-    c = conn.cursor()
-    c.execute("""DROP TABLE items;""")
-    create_items_table = """CREATE TABLE IF NOT EXISTS items (
-                            item_id SERIAL PRIMARY KEY,
-                            category_id INTEGER NOT NULL,
-                            article TEXT NOT NULL,
-                            quantity INTEGER NOT NULL,
-                            expiry_date INTEGER NOT NULL
-                            );"""
-
-    create_categories_table = """CREATE TABLE IF NOT EXISTS categories (
-                                 category_id SERIAL PRIMARY KEY,
-                                 category TEXT NOT NULL
-                                 );"""
-    c.execute(create_items_table)
-    c.execute(create_categories_table)
+    cur = conn.cursor()
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS items 
+                    (item_id SERIAL PRIMARY KEY,
+                     category_id INTEGER NOT NULL,
+                     article TEXT NOT NULL,
+                     quantity INTEGER NOT NULL,
+                     expiry_date INTEGER NOT NULL );""")
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS categories 
+                    (category_id SERIAL PRIMARY KEY,
+                     category TEXT NOT NULL );""")
     conn.commit()
+    cur.close()
     conn.close()
     return redirect(url_for('create_categories'))
 
@@ -196,11 +224,11 @@ def run_categories_insert():
     """Inserts the categories added by the user into the table."""
     categories = categories_to_list('categories')
     conn = get_db_connection()
-    c = conn.cursor()
+    cur = conn.cursor()
     for category in categories:
-        c.execute('INSERT INTO categories (category) VALUES (%s);', (category,))
+        cur.execute('INSERT INTO categories (category) VALUES (%s);', (category,))
     conn.commit()
-    c.close()
+    cur.close()
     conn.close()
     return redirect(url_for('confirm_categories'))
 
@@ -214,13 +242,20 @@ def confirm_categories():
 def export_view():
     """ Views the export page that allows copy-pasting all DB content"""
     conn = get_db_connection()
-    items = conn.execute(
-        'SELECT item_id, categories.category, article, quantity, expiry_date '
-        'FROM items '
-        'INNER JOIN categories '
-        'ON items.category_id=categories.category_id '
-        'ORDER BY category'
-    ).fetchall()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT 
+            item_id, 
+            categories.category, 
+            article, 
+            quantity, 
+            expiry_date 
+           FROM items 
+           INNER JOIN categories 
+           ON items.category_id=categories.category_id 
+           ORDER BY category""")
+    items = cur.fetchall()
+    cur.close()
     conn.close()
     num_articles = len(items)
     return render_template('export_view.html',
