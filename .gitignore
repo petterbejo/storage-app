@@ -4,9 +4,3 @@ __pycache__/
 # PyCharm
 .idea/
 
-# Keep database dir but not content
-webapp/database/*
-!webapp/database/.gitkeep
-
-# Directory containing personal test files
-personal_files/
