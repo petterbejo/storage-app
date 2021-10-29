@@ -4,7 +4,7 @@ FROM python:3.8-slim-buster
 
 WORKDIR /app
 
-RUN pip3 install Flask gunicorn
+RUN pip3 install Flask gunicorn psycopg2-binary
 
 COPY . .
 

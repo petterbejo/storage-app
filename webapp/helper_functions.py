@@ -1,20 +1,17 @@
 """
 Helper functions to be used within the main module, app.py.
 """
-from pathlib import Path
+import os
 
 import psycopg2
 from flask import request
 
-import database.creds as creds
-
-db_path = Path.cwd().joinpath('database', 'storage_db.db')
 
 # Establishes the connection to the database
 def get_db_connection():
     """ Opens a connection to the database. """
-    conn_str = f'host={creds.PGHOST} port=5432 dbname={creds.PGDATABASE} '\
-               f'user={creds.PGUSER} password={creds.PGPASSWORD}'
+    conn_str = f'host={"db"} port=5432 dbname={os.environ.get("PGDB")} '\
+               f'user={os.environ.get("PGUSER")} password={os.environ.get("PGPWD")}'
     conn = psycopg2.connect(conn_str)
     return conn
 
