@@ -1,17 +1,18 @@
 """
 Helper functions to be used within the main module, app.py.
 """
-import os
-
 import psycopg2
 from flask import request
 
+db_name = '/run/secrets/POSTGRES_DB'
+db_user = '/run/secrets/POSTGRES_USER'
+db_pw = '/run/secrets/POSTGRES_PASSWORD'
 
 # Establishes the connection to the database
 def get_db_connection():
     """ Opens a connection to the database. """
-    conn_str = f'host={"db"} port=5432 dbname={os.environ.get("PGDB")} '\
-               f'user={os.environ.get("PGUSER")} password={os.environ.get("PGPWD")}'
+    conn_str = f'host={"db"} port=5432 dbname={db_name} '\
+               f'user={db_user} password={db_pw}'
     conn = psycopg2.connect(conn_str)
     return conn
 

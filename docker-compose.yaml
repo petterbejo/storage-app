@@ -1,20 +1,37 @@
 version: "3.7"
+
+secrets:
+  POSTGRES_DB:
+    external: true
+  POSTGRES_USER:
+    external: true
+  POSTGRES_PASSWORD:
+    external: true
+
 services:
   db:
     image: postgres
     restart: always
-    environment:
-      - POSTGRES_DB=${PGDS}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPWD}
+  secrets:
+    - POSTGRES_DB
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+  environment:
+    POSTGRES_DB: /run/secrets/POSTGRES_DB
+    POSTGRES_USER: /run/secrets/POSTGRES_USER
+    POSTGRES_PASSWORD: /run/secrets/POSTGRES_PASSWORD
 
   app:
     build: webapp
     restart: always
     ports:
       - 5000:8000
-    environment:
-      - POSTGRES_DB=${PGDS}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPWD}
+  secrets:
+    - POSTGRES_DB
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+  environment:
+    POSTGRES_DB: /run/secrets/POSTGRES_DB
+    POSTGRES_USER: /run/secrets/POSTGRES_USER
+    POSTGRES_PASSWORD: /run/secrets/POSTGRES_PASSWORD
 
