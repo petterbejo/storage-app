@@ -10,8 +10,8 @@ from flask import request
 # Establishes the connection to the database
 def get_db_connection():
     """ Opens a connection to the database. """
-    conn_str = f'host={"db"} port=5432 dbname={os.environ.get("PGDB")} '\
-               f'user={os.environ.get("PGUSR")} password={os.environ.get("PGPWD")}'
+    conn_str = f'host={"db"} port=5432 dbname={os.environ.get("POSTGRES_DB")} '\
+               f'user={os.environ.get("POSTGRES_USER")} password={os.environ.get("POSTGRES_PASSWORD")}'
     conn = psycopg2.connect(conn_str)
     return conn
 
