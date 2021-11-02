@@ -4,9 +4,9 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_DB=${PGDS}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPWD}
+      - PGDB=${PGDB}
+      - PGUSR=${PGUSR}
+      - PGPWD=${PGPWD}}
 
   app:
     build: webapp
@@ -14,7 +14,7 @@ services:
     ports:
       - 5000:8000
     environment:
-      - POSTGRES_DB=${PGDS}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPWD}
+      - PGDB=${PGDB}
+      - PGUSR=${PGUSR}
+      - PGPWD=${PGPWD}}
 

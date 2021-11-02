@@ -9,7 +9,7 @@ Of course! But please be aware that there's no user authentication for the app, 
 There are basically two ways of getting started:
 1. Copy the docker-compose.yaml file to wherever you want to run the app, then run it with docker-compose up -d. This should pull the official Postgres image and the image from my repo on Docker Hub: https://hub.docker.com/r/petterbejo/storage-app, and then run the app on port 5000 of the host machine. 
 2. If you want to build the images yourself, git clone this repository and build the image by running docker-compose up -d from the project's root directory.
-Please note that no matter which of the two methods you choose, you will have to set the three environment variables for the database name, user, and password (mentioned in the compose file) before you can run the app.
+Please note that no matter which of the two methods you choose, you must set the three environment variables for the database name, user, and password (mentioned in the compose file) before you run the containers.
 
 Once you've got it up and running, you have to go to your_url/run_db_setup. This will create the database and guide you through the setup process. If you go to the main page before, you will get an error!
 
