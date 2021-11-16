@@ -11,6 +11,8 @@ There are basically two ways of getting started:
 2. If you want to build the images yourself, git clone this repository and build the image by running docker-compose up -d from the project's root directory.
 Please note that no matter which of the two methods you choose, you must set the three environment variables for the database name, user, and password (mentioned in the compose file) before you run the containers.
 
+And, while it is possible to run the containerized app without any docker volume, you must do so if you want to persist the data. 
+
 Once you've got it up and running, you have to go to your_url/run_db_setup. This will create the database and guide you through the setup process. If you go to the main page before, you will get an error!
 
 Then you will have to fill in the categories. Once you have created them, you can go to the main page and make a bulk upload with a CSV file. The CSV file must have the following columns, in this particular order: Category, article, quantity, expiry date. To keep things simple, the expiry date is formatted as YYMM. If the item does not have an expiry date, I suggest you set it to 9999. The delimiter must be a semi-colon. If the category is not written exactly the same way you did when you filled in the categories, the item will not be inserted. So be aware of spaces and cases!
