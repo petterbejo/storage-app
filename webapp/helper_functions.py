@@ -99,10 +99,12 @@ def get_item_id(row) -> int:
     The function then compares the row to the content of the database
     and returns the primary key, item_id, of the item."""
     conn = get_db_connection()
-    in_storage_now = conn.execute(
+    c = conn.cursor()
+    c.execute(
         'SELECT item_id, article, expiry_date '
         'FROM items '
-        ).fetchall()
+        )
+    in_storage_now = c.fetchall()
     conn.close()
     for item in in_storage_now:
         if str(item[1]) == str(row[1]) and str(item[2]) == str(row[3]):
