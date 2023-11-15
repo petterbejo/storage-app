@@ -142,19 +142,19 @@ def run_bulk_update():
     converted_file = csv_converter('file')
     categories = get_categories()
     conn = get_db_connection()
-    cur = conn.cursor()
+    c = conn.cursor()
     omitted = []
     updated = []
     for row in converted_file:
         if row[0] in categories:
             if already_in_storage(row):
                 item_id = get_item_id(row)
-                conn.execute('UPDATE items '
-                      'SET Quantity = Quantity + ? '
-                      'WHERE item_id = ? ', (row[2], item_id, ))
+                c.execute('UPDATE items '
+                      'SET Quantity = Quantity + %s '
+                      'WHERE item_id = (%s) ', (row[2], item_id, ))
                 updated.append([row])
             else:
-                cur.execute(
+                c.execute(
                     """INSERT INTO items 
                                     (category_id, 
                                     article, 

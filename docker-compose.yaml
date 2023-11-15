@@ -1,37 +1,37 @@
 version: "3.7"
 
-secrets:
-  POSTGRES_DB:
-    external: true
-  POSTGRES_USER:
-    external: true
-  POSTGRES_PASSWORD:
-    external: true
-
 services:
   db:
     image: postgres
     restart: always
-  secrets:
-    - POSTGRES_DB
-    - POSTGRES_USER
-    - POSTGRES_PASSWORD
-  environment:
-    POSTGRES_DB: /run/secrets/POSTGRES_DB
-    POSTGRES_USER: /run/secrets/POSTGRES_USER
-    POSTGRES_PASSWORD: /run/secrets/POSTGRES_PASSWORD
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    secrets:
+      - db_password
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
 
   app:
     build: webapp
     restart: always
     ports:
       - 5000:8000
-  secrets:
-    - POSTGRES_DB
-    - POSTGRES_USER
-    - POSTGRES_PASSWORD
-  environment:
-    POSTGRES_DB: /run/secrets/POSTGRES_DB
-    POSTGRES_USER: /run/secrets/POSTGRES_USER
-    POSTGRES_PASSWORD: /run/secrets/POSTGRES_PASSWORD
+    secrets:
+      - db_password
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
 
+volumes:
+  db-data:
+
+secrets:
+  db_password:
+    file: db_password.txt

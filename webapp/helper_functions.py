@@ -1,18 +1,27 @@
 """
 Helper functions to be used within the main module, app.py.
 """
+import os
+
 import psycopg2
 from flask import request
 
-db_name = '/run/secrets/POSTGRES_DB'
-db_user = '/run/secrets/POSTGRES_USER'
-db_pw = '/run/secrets/POSTGRES_PASSWORD'
 
-# Establishes the connection to the database
+def get_db_password():
+    """Get the DB password from the Docker secret"""
+    secret_path = os.environ.get("POSTGRES_PASSWORD_FILE")
+    with open(secret_path) as pwd_file:
+        pwd = pwd_file.read()
+    return pwd
+
+
 def get_db_connection():
     """ Opens a connection to the database. """
-    conn_str = f'host={"db"} port=5432 dbname={db_name} '\
-               f'user={db_user} password={db_pw}'
+    conn_str = (f'host={os.environ.get("DB_HOST")} '\
+                f'port={os.environ.get("DB_PORT")} '\
+                f'dbname={os.environ.get("POSTGRES_DB")} '\
+                f'user={os.environ.get("POSTGRES_USER")} '\
+                f'password={get_db_password()}')
     conn = psycopg2.connect(conn_str)
     return conn
 
@@ -100,10 +109,12 @@ def get_item_id(row) -> int:
     The function then compares the row to the content of the database
     and returns the primary key, item_id, of the item."""
     conn = get_db_connection()
-    in_storage_now = conn.execute(
+    c = conn.cursor()
+    c.execute(
         'SELECT item_id, article, expiry_date '
         'FROM items '
-        ).fetchall()
+        )
+    in_storage_now = c.fetchall()
     conn.close()
     for item in in_storage_now:
         if str(item[1]) == str(row[1]) and str(item[2]) == str(row[3]):
