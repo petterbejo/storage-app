@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Insert a new item</h1>
+
+    <p>Choose one of the following categories: </p>
+    {% for category in categories %}
+        <tr>
+            <td>{{ category }}, </td>
+        </tr>
+    {% endfor %}
+    <br>
+    <br>
+<form action="{{ url_for('run_single_item_insert') }}" method=post>
+    <label for="item">Item:</label>
+    <br>
+    <input type="text" name="item"
+           value="{{ request.form['item'] }}">
+    <br> <br>
+
+    <label for="category">Category:</label>
+    <select name="category">{% for c in categories %}
+    <OPTION value={{c}}>{{c}}</option>
+    {% endfor %}
+    </select>
+    <br> <br>
+
+    <label for="expiry_date">Expiry date:</label>
+    <input type="text" name="expiry_date"
+           value="{{request.form['expiry_date']}}">
+    <br> <br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="text" name="quantity"
+            value="{{ request.form['quantity']}}">
+    <br> <br>
+
+    <br> <br>
+    <input type=submit value=Save>
+    </form>
+
+<p></p>
+<p><a href="{{ url_for('index') }}">Go back to the front page</a> </p>
+
+{% endblock %}

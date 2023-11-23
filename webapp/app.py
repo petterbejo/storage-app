@@ -4,6 +4,7 @@ from flask import Flask
 from flask import render_template
 from flask import url_for
 from flask import redirect
+from flask import request
 
 from helper_functions import get_db_connection
 from helper_functions import get_categories
@@ -12,6 +13,7 @@ from helper_functions import csv_converter
 from helper_functions import already_in_storage
 from helper_functions import get_item_id
 from helper_functions import categories_to_list
+from helper_functions import convert_request_to_row
 
 app = Flask(__name__)
 
@@ -260,3 +262,46 @@ def export_view():
     num_articles = len(items)
     return render_template('export_view.html',
                            storage=items, num_articles=num_articles)
+
+@app.route('/insert_single_item')
+def insert_single_item():
+    """View the page to inert a single item"""
+    categories = get_categories()
+    return render_template('insert_single_item.html',
+                           categories=categories)
+
+@app.route('/run_single_item_insert', methods=('GET', 'POST'))
+def run_single_item_insert():
+    """Insert a new item into the database"""
+    categories = get_categories()
+    conn = get_db_connection()
+    c = conn.cursor()
+    omitted = []
+    updated = []
+    row = convert_request_to_row(request)
+    if row[0] in categories:
+        if already_in_storage(row):
+            item_id = get_item_id(row)
+            c.execute('UPDATE items '
+                      'SET Quantity = Quantity + %s '
+                      'WHERE item_id = (%s) ', (row[2], item_id, ))
+            updated.append([row])
+        else:
+            c.execute(
+                    """INSERT INTO items 
+                                (category_id, 
+                                article, 
+                                quantity, 
+                                expiry_date) 
+                    VALUES (%s, %s, %s, %s) """,
+                [assign_category_id(
+                    row[0]),
+                    row[1],
+                    row[2],
+                    row[3]])
+
+    else:
+        omitted.append([row])
+    conn.commit()
+    conn.close()
+    return render_template('updatecompleted.html', omitted=omitted, updated=updated)

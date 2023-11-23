@@ -126,4 +126,15 @@ def categories_to_list(file) -> list:
     raw = request.form[file]
     return raw.split(', ')
 
+def convert_request_to_row(req) -> list:
+    """Converts a request form into a row."""
+    row = []
+    row.append(req.form['category'])
+    row.append(req.form['item'])
+    row.append(req.form['expiry_date'])
+    row.append(req.form['quantity'])
+    return row
+
+
+
 
