@@ -1,7 +1,8 @@
 # A simple storage app
+
 ## What is this?
 
-If you have a storage room with food and all kinds of goods that you'd like to keep track of, then this is the app for you. It's a Flask-based containerized app with a Postgres database. 
+If you have a storage room with food and all kinds of goods that you'd like to keep track of, then this is the app for you. It's a Flask-based containerized app with a Postgres database (it's also one of the first projects I ever coded which is why I'm planning to make a deep refactoring of the whole codebase). 
 
 ## Can I use this for myself?
 
