@@ -131,8 +131,8 @@ def convert_request_to_row(req) -> list:
     row = []
     row.append(req.form['category'])
     row.append(req.form['item'])
-    row.append(req.form['expiry_date'])
     row.append(req.form['quantity'])
+    row.append(req.form['expiry_date'])
     return row
 
 
