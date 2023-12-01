@@ -6,24 +6,25 @@ import os
 import psycopg2
 from flask import request
 
+class DataHandler():
+    def __init__(self):
+        self.conn_str = (f'host={os.environ.get("DB_HOST")} ' \
+                    f'port={os.environ.get("DB_PORT")} ' \
+                    f'dbname={os.environ.get("POSTGRES_DB")} ' \
+                    f'user={os.environ.get("POSTGRES_USER")} ' \
+                    f'password={self._get_db_password()}')
 
-def get_db_password():
-    """Get the DB password from the Docker secret"""
-    secret_path = os.environ.get("POSTGRES_PASSWORD_FILE")
-    with open(secret_path) as pwd_file:
-        pwd = pwd_file.read()
-    return pwd
+    def _get_db_password(self):
+        """Get the DB password from the Docker secret"""
+        secret_path = os.environ.get("POSTGRES_PASSWORD_FILE")
+        with open(secret_path) as pwd_file:
+            pwd = pwd_file.read()
+        return pwd
 
-
-def get_db_connection():
-    """ Opens a connection to the database. """
-    conn_str = (f'host={os.environ.get("DB_HOST")} '\
-                f'port={os.environ.get("DB_PORT")} '\
-                f'dbname={os.environ.get("POSTGRES_DB")} '\
-                f'user={os.environ.get("POSTGRES_USER")} '\
-                f'password={get_db_password()}')
-    conn = psycopg2.connect(conn_str)
-    return conn
+    def _get_db_connection(self):
+        """ Opens a connection to the database. """
+        conn = psycopg2.connect(self.conn_str)
+        return conn
 
 
 # Helper functions for the bulk update

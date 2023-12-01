@@ -6,14 +6,14 @@ from flask import url_for
 from flask import redirect
 from flask import request
 
-from helper_functions import get_db_connection
-from helper_functions import get_categories
-from helper_functions import assign_category_id
-from helper_functions import csv_converter
-from helper_functions import already_in_storage
-from helper_functions import get_item_id
-from helper_functions import categories_to_list
-from helper_functions import convert_request_to_row
+from data_handler import get_db_connection
+from data_handler import get_categories
+from data_handler import assign_category_id
+from data_handler import csv_converter
+from data_handler import already_in_storage
+from data_handler import get_item_id
+from data_handler import categories_to_list
+from data_handler import convert_request_to_row
 
 app = Flask(__name__)
 
